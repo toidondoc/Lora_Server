@@ -1,9 +1,11 @@
 // rf95_server.pde
 // moi thiet bi se duoc danh 1 ID bang tay. thiet bi nay co ID la 003;
-//kn yeu cau ket noi voi node cha
-//kt1 la cho ket noi voi cac node co tin hieu muc cao
-//kt2 la cho ket noi voi cac node co tin hieu muc thap
+// kn yeu cau ket noi voi node cha
+// kt1 la cho ket noi voi cac node co tin hieu muc cao
+// kt2 la cho ket noi voi cac node co tin hieu muc thap
 // tc0  chap nhan ket noi
+// ng0 thuc hien ngu cho mang
+//#include <string>
 #include <SPI.h>
 #include <RH_RF95.h>
 // Singleton instance of the radio driver
@@ -15,7 +17,7 @@ unsigned long time = 0;
 unsigned long time1 = 0;
 unsigned long time2 = 0;
 int dem = 0;
-int state = 0;  //state = 0; la trang thai ban dau can thic hien ket noi
+int state = 0;  //state = 0; la trang thai ban dau can thuc hien ket noi
 void setup()
 {
 	pinMode(led, OUTPUT);
@@ -234,7 +236,6 @@ void nhandulieu()
 					{
 						if (a[6] == (idnodecon[i][1]) && a[7] == (idnodecon[i][2]) && a[8] == (idnodecon[i][3]))
 						{
-							Serial.println((char*)buf);
 							uint8_t data[30] = "dn1"; //dn1 gui hieu phan roi da nhan cho node con
 							data[3] = id[0];
 							data[4] = id[1];
@@ -286,4 +287,16 @@ void nhandulieu()
 			Serial.println("recv failed");
 		}
 	}
+	// if (thoi gian bang 4h00, 4h10 , 4h20 gui 
+	//uint8_t tinHieuNgu[30] = "ng0"; //dn1 gui hieu phan roi da nhan cho node con
+	//tinHieuNgu[3] = id[0];
+	//tinHieuNgu[4] = id[1];
+	//tinHieuNgu[5] = id[2];
+	//rf95.send(tinHieuNgu, sizeof(tinHieuNgu));
+	//rf95.waitPacketSent();
+}
+
+void ngu()
+{
+	
 }
