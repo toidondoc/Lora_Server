@@ -1,6 +1,9 @@
 // rf95_server.pde
 // moi thiet bi se duoc danh 1 ID bang tay. thiet bi nay co ID la 003;
-
+//kn yeu cau ket noi voi node cha
+//kt1 la cho ket noi voi cac node co tin hieu muc cao
+//kt2 la cho ket noi voi cac node co tin hieu muc thap
+// tc0  chap nhan ket noi
 #include <SPI.h>
 #include <RH_RF95.h>
 // Singleton instance of the radio driver
@@ -27,15 +30,10 @@ void setup()
 			idnodecon[i][j] = '0';
 		}
 	}
-	//idnodecon[1][0] = '1';
-	//idnodecon[1][1] = '0';
-	//idnodecon[1][2] = '0';
-	//idnodecon[1][3] = '4';
 }
 
 void loop()
 {
-//	Serial.println(state);
 	if (state == 0)
 	{
 		time = millis();
@@ -43,7 +41,7 @@ void loop()
 	}
 	if (state == 1)
 	{
-		
+
 		if (millis() - time < 10000)
 		{
 			ketnoimuc1();
@@ -66,7 +64,7 @@ void loop()
 void ketnoimuc1()
 {
 	if (rf95.available())
-	{  
+	{
 		uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
 		uint8_t len = sizeof(buf);
 		if (rf95.recv(buf, &len))
@@ -80,6 +78,7 @@ void ketnoimuc1()
 			Serial.println(rssi);
 			if (a[0] == 'k'&& a[1] == 'n'&& a[2] == '0'&& rssi > -25)  // kiem tra tin hieu xem co node nao yeu cau ket noi hay khong
 			{
+				Serial.println("thuc hien ket noi muc 1");
 				Serial.println("node con co the ket noi voi tin hieu muc cao");
 				uint8_t data[30] = "kt1"; //kt1 la cho ket noi voi cac node co tin hieu muc cao
 				data[3] = id[0];
@@ -95,16 +94,17 @@ void ketnoimuc1()
 			}
 			else if (a[0] == 't'&& a[1] == 'c'&& a[2] == '0'&&a[3] == id[0] && a[4] == id[1] && a[5] == id[2]) //them id cua node con vao danh sach
 			{
-				for (int i = 0; i <= 99; i++)  
+				for (int i = 0; i <= 99; i++)
 				{
 					if (idnodecon[i][0] == '0')
 					{
 						idnodecon[i][0] = '1';
-						idnodecon[i][1] = a[3];
-						idnodecon[i][2] = a[4];
-						idnodecon[i][3] = a[5];
+						idnodecon[i][1] = a[6];
+						idnodecon[i][2] = a[7];
+						idnodecon[i][3] = a[8];
+						Serial.println("luu id node con");
 						i = 101;
-						Serial.println("ket noi lan dau");
+						
 					}
 				}
 			}
@@ -124,9 +124,8 @@ void ketnoimuc2()
 	}
 	else if (millis() - time1 == 4000)
 	{
-		Serial.println("gui du lieu ket noi muc 2");
-		// Send a message to rf95_server
-		uint8_t data[30] = "kt2"; //kn yeu cau ket noi
+		Serial.println("gui du lieu yeu cau node con ket noi muc 2");
+		uint8_t data[30] = "kt2"; //kt2 la cho ket noi voi cac node co tin hieu muc thap
 		data[3] = id[0];
 		data[4] = id[1];
 		data[5] = id[2];
@@ -135,7 +134,7 @@ void ketnoimuc2()
 		time1 = millis();
 	}
 	if (rf95.available())
-	{  
+	{
 		uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
 		uint8_t len = sizeof(buf);
 		if (rf95.recv(buf, &len))
@@ -169,11 +168,11 @@ void ketnoimuc2()
 					if (idnodecon[i][0] == '0')
 					{
 						idnodecon[i][0] = '1';
-						idnodecon[i][1] = a[3];
-						idnodecon[i][2] = a[4];
-						idnodecon[i][3] = a[5];
+						idnodecon[i][1] = a[6];
+						idnodecon[i][2] = a[7];
+						idnodecon[i][3] = a[8];
 						i = 101;
-						Serial.println("ket noi lan dau");
+						Serial.println("luu id node con");
 					}
 				}
 			}
@@ -195,7 +194,7 @@ void nhandulieu()
 		}
 		else if (millis() - time2 == 4000)
 		{
-			Serial.println("gui du lieu ket noi nhandulieu");
+			Serial.println("gui du lieu yeu cau node con gui du lieu");
 			// Send a message to rf95_server
 			uint8_t data[30] = "kg0"; // kg0 yeu cau node con bat dau gui du lieue len node cha
 			data[3] = id[0];
@@ -219,6 +218,8 @@ void nhandulieu()
 			Serial.println((char*)buf);
 
 			uint8_t *a = (uint8_t*)buf;
+			if (a[0] == 'k'&& a[1] == 'g'&& a[2] == '1'&&a[3] == id[0] && a[4] == id[1] && a[5] == id[2])
+				Serial.print("du lieu nhan duoc tu node con: ");
 			for (int i = 0; i < 15; i++)
 			{
 				Serial.print(a[i]);
@@ -226,7 +227,6 @@ void nhandulieu()
 				Serial.print(" ");
 			}
 			Serial.println(" ");
-			if (a[0] == 'k'&& a[1] == 'g'&& a[2] == '1'&&a[3] == id[0] && a[4] == id[1] && a[5] == id[2])
 			{
 				for (int i = 0; i <= 99; i++)
 				{
@@ -252,7 +252,7 @@ void nhandulieu()
 			if (a[0] == 'k'&& a[1] == 'n'&& a[2] == '0')
 			{
 				Serial.println("thuc hien ket noi ");
-				uint8_t data[30] = "kt3"; //kt3 la cho ket noi voi cac node 
+				uint8_t data[30] = "kt3"; //kt3 cho ket noi voi cac node 
 				data[3] = id[0];
 				data[4] = id[1];
 				data[5] = id[2];
@@ -266,6 +266,18 @@ void nhandulieu()
 			}
 			else if (a[0] == 't'&& a[1] == 'c'&& a[2] == '0'&&a[3] == id[0] && a[4] == id[1] && a[5] == id[2])
 			{
+				for (int i = 0; i <= 99; i++)
+				{
+					if (idnodecon[i][0] == '0')
+					{
+						idnodecon[i][0] = '1';
+						idnodecon[i][1] = a[6];
+						idnodecon[i][2] = a[7];
+						idnodecon[i][3] = a[8];
+						i = 101;
+						Serial.println("luu id node con");
+					}
+				}
 			}
 			digitalWrite(led, LOW);
 		}
