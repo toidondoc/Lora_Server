@@ -19,4 +19,4 @@ C:\Users\MINH\ NGUYEN\AppData\Local\Temp\VMBuilds\rf95_server\uno\Debug\rf95_ser
  C:\Users\MINH\ NGUYEN\Documents\Arduino\libraries\RadioHead/RadioHead.h \
  C:\Users\MINH\ NGUYEN\Documents\Arduino\libraries\RadioHead/RHHardwareSPI.h \
  C:\Users\MINH\ NGUYEN\Documents\Arduino\libraries\RadioHead/RHGenericSPI.h \
- c:\program\ files\ (x86)\microsoft\ visual\ studio\2017\professional\common7\ide\extensions\mbsqucm2.qs1\Micro\ Platforms\default\debuggers\VM_DBG/VM_DBG.h
+ c:\program\ files\ (x86)\microsoft\ visual\ studio\2017\professional\common7\ide\extensions\pnjvqy5x.ql4\Micro\ Platforms\default\debuggers\VM_DBG/VM_DBG.h
